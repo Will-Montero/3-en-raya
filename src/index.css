@@ -81,7 +81,7 @@ body {
   border-color: transparent;
 }
 
-.square.is-selected {
+.square.isSelected {
   color: #fff;
   background: #09f;
 }

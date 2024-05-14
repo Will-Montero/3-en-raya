@@ -3,7 +3,7 @@
 //square es cada cuadro
 //children será X o O
 //update es la actulizacion del tablero 
-////isSelected es la parte visual del turno 
+//isSelected es la parte visual del turno 
 
 export const Square = ({ children, updateBoard, index, isSelected }) => {
 
