@@ -1,107 +1,86 @@
-import { useState } from 'react'
+import { useState  } from "react";
+import { Square } from "./components/Square";
 import { TURNS } from './constants'
-import { Square } from './components/Square'
-import { checkEndGame, checkWinnerFrom } from './logic/board'
-import { WinnerModal } from './components/WinnerModal'
-import './App.css'
-import confetti from 'canvas-confetti'
+import { checkWinnerFrom, CheckEndGame} from './logic'
+import { WinnerModal } from "./components/WinnerModal";
+import confetti from "canvas-confetti";
 
-function App() {
+function App(){
+  //se dibuja el tablero de  9 posiciones 
 
-  //inicio de partida con valores nuevos o guardados
   const [board, setBoard] = useState(() => {
     const boardFromStorage = window.localStorage.getItem('board')
-   if(boardFromStorage) return JSON.parse(boardFromStorage)
-    return Array(9).fill(null)
-  })
-   
-  ///estado que medice de quien es el turno 
-  const [turn, setTurn] = useState(() => {
-    const turnFromLocalStorage = window.localStorage.getItem('turn')
-    return turnFromLocalStorage ?? TURNS.X
-  })
-
-  //con este estado para saber si hay un ganador o hay un empate (null)
-  const [winner, setWinner] = useState(null)
-
-  //aqui reseteamos el juego con lo svalores por defecto de null
-  const resetGame = () => {
-    setBoard(Array(9).fill(null))
-    setTurn(TURNS.X)
-    setWinner(null)
-
-    window.localStorage.removeItem('board')
-    window.localStorage.removeItem('turn')
+    if(boardFromStorage) return JSON.parse(boardFromStorage)
+      return Array(9).fill(null)
   }
+// aqui inicializamos el juego, si hay una partida guaradda, inicia con esos valores, de lo caontrario iniciará con los valores por defecto(vacio)
+)
+
+const[turn, setTurn] = useState(() => {
+  const turnFromLocalStorage = window.localStorage.getItem('turn')
+  return turnFromLocalStorage ?? TURNS.X
+}
+//aqui comenzamos con el turno de las x pero si ya hay una partida guardada, usara el turno que quedo de ultimo
+)
+
+const [winner, setWinner] = useState(null)
+//esta constante es para saber cuando hay un ganador o si hay un empate
 
 
-  //parte importante ya que esta nos permite saber quien es el ganador, turnos, actuliza los turnos y cabia de estados
-  const updateBoard = (index) => {
+//aqui reseteamos el juego con lo svalores por defecto 
+const resetGame = () => {
+  setBoard(Array(9).fill(null))
+  setTurn(TURNS.X)
+  setWinner(null)
 
-    //evitamos que se sobreescriba y que no se pueda escribir mas si ya hay un ganador
-    if(board[index] || winner) return
-
-
-    //usamos spredOperator para tratar los estados como inmutables y que no se sobreescriba sobre lo que ya hay
-    const newBoard = [...board]
-
-    newBoard[index] = turn  //el newBoard recibe el valor del indice del turno actual y asu cuando se de click en esa posicion se guarda el turno 
-
-    setBoard(newBoard) //aqui actualizamos el board
-
-
-    //aqui decimos de quien es el turno, si de las X  o O
-    const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
-
-    setTurn(newTurn) //se actualiza el nuevo valor
-
-
-
-    // antes de saber si hay un ganador vamos a guardar la partida en el localStorage para saber si queda a medio jugar y una vez se ingrese de nuevo, esta siga tal y como la dejó el jugador
-    window.localStorage.setItem('board', JSON.stringify(newBoard))
-    window.localStorage.setItem('turn', newTurn)
-
-    //lee el tablero actualizado para saber si hay un ganador y actualiza las posiciones 
-    const newWinner = checkWinnerFrom(newBoard)
-    if(newWinner){ //si hay un ganador saldra confeti 
-      confetti()
-      setWinner(newWinner)
-    }else if (checkEndGame(newBoard)){
-      setWinner(false) //si no hay ganador, seguirá el turno 
-    }
-  }
-
-
-
-  return (
-   <main className='board'>
-    <h1>3 en raya</h1>
-    <button onClick={resetGame}> comezar de nuevo</button>
-    <section className='game'>
-      {board.map((_, index) => {
-        return (
-          <Square
-          key={index}
-          index={index}
-          updateBoard={updateBoard}
-          >
-            {board[index]}
-          </Square>
-        )
-      })}
-    </section>
-
-
-    <section className='turn'>
-      
-<Square isSelected={turn === TURNS.X}> {TURNS.X}</Square>
-<Square isSelected={turn === TURNS.O}> {TURNS.O}</Square>
-    </section>
-
-
-<WinnerModal resetGame={resetGame} winner={winner}></WinnerModal>
-   </main>
-  )
+  window.localStorage.removeItem('board')
+  window.localStorage.removeItem('turn')
 }
 
-export default App
+const updateBoard = (index) => {
+  //esta constante es una de lasmas importantes porque  actualiza los estados, mira los turnos, me dice qcual es el ganodr, etc
+
+
+  if(board[index] || winner) return 
+  //aqui evitamos que se sobreescriba y no se vuelva a actualizar si ya hay un ganador 
+
+
+  const newBoard = [... board] //usamos un spreadOperator para usar un nuevo tablero y tratar los estados com inmutables
+
+  newBoard[index] = turn //el nuevo board recibe el indice actual y guarda el turno 
+
+  setBoard(newBoard) //aqui actualizamos el board
+
+  const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
+  //si el turno es de las x, seguira o
+
+  setTurn(newTurn) //actualizamos el turno
+
+  //guardamos la partida si queda a medias y esto lo hacemos antes de saber si ya hay un ganador
+
+  window.localStorage.setItem('board', JSON.stringify(newBoard))
+  window.localStorage.setItem('turn', newTurn)
+
+  const newWinner = checkWinnerFrom(newBoard) //checamos si hay un ganador pasandole la newBoard
+  if(newWinner){
+    confetti()
+    setWinner(newWinner)
+  }else if(CheckEndGame(newBoard)){
+    setWinner(false) //cheacamos si hay un empate para reinciar el juego
+  }
+
+}
+
+return (
+  
+  <main className="board">
+    <h1>3 en raya </h1>
+    <button onClick={resetGame}> comenzar de nuevo </button>
+    <section className="game"> 
+      
+
+    </section>
+  </main>
+)
+}
+

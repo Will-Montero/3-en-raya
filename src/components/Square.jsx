@@ -1,22 +1,21 @@
-//este componente es cada cuadro del tablero del 3 en raya 
+//este componente es cada cuadro del tablero
 
-//square es cada cuadro
-//children será X o O
-//update es la actulizacion del tablero 
-//isSelected es la parte visual del turno 
+export const Square =({ children, updateBoard, index, isSelected}) => {
 
-export const Square = ({ children, updateBoard, index, isSelected }) => {
+    //la propiedad children es X o O 
+    //updateBoard es la actualizacion del tablero una vez damos click
+    ///indcice es para saber cual es el indice del tablero 
+    //isSelected es la parte visual de los turnos 
 
-    //aqui le decimos visualmente de quien es el turno 
-    const className = `square ${isSelected ? 'isSelected' : ''}`
 
-    const handleClick = () => {
-        updateBoard(index)
-    }
+const className = `square ${isSelected ? 'is-selected' : ''}`
+//aqui le enseñamos de manera visual de quien es el turno
 
-    return (
-        <div onClick={handleClick} className={className}>
-              {children}
-        </div>
-    )
+const handleClick = () => {
+    updateBoard(index)
+}
+
+return <div onClick={handleClick} className={className}>
+    {children}
+</div>
 }

@@ -1,11 +1,11 @@
-//turnos
 export const TURNS = {
+    //contante de turnos
     X: 'X',
     O: 'O'
-}
+};
 
 
-// combinaciones ganadoras 
+//combinaciones ganadoras 
 export const WINNER_COMBOS = [
     [0, 1, 2],
     [3, 4, 5],
