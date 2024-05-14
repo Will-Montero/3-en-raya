@@ -21,7 +21,7 @@ function App() {
     return turnFromLocalStorage ?? TURNS.X
   })
 
-  //con este estado para saber si hayun ganador o hay un empate (null)
+  //con este estado para saber si hay un ganador o hay un empate (null)
   const [winner, setWinner] = useState(null)
 
   //aqui reseteamos el juego con lo svalores por defecto de null
@@ -45,7 +45,10 @@ function App() {
     //usamos spredOperator para tratar los estados como inmutables y que no se sobreescriba sobre lo que ya hay
     const newBoard = [...board]
 
+    newBoard[index] = turn  //el newBoard recibe el valor del indice del turno actual y asu cuando se de click en esa posicion se guarda el turno 
+
     setBoard(newBoard) //aqui actualizamos el board
+
 
     //aqui decimos de quien es el turno, si de las X  o O
     const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X
@@ -89,8 +92,8 @@ function App() {
     </section>
 
     <section className='turn'>
-<Square isSelected={turn === TURNS.X}> {TURNS.O}</Square>
-<Square isSelected={turn === TURNS.O}> {TURNS.X}</Square>
+<Square isSelected={turn === TURNS.X}> {TURNS.X}</Square>
+<Square isSelected={turn === TURNS.O}> {TURNS.O}</Square>
     </section>
 
 
