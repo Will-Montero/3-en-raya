@@ -1,8 +1,8 @@
 import { useState  } from "react";
 import { Square } from "./components/Square";
 import { TURNS } from './constants'
-import { checkWinnerFrom, CheckEndGame} from './logic'
 import { WinnerModal } from "./components/WinnerModal";
+import { checkWinnerFrom, checkEndGame } from "./logic/board";
 import confetti from "canvas-confetti";
 
 function App(){
@@ -65,7 +65,7 @@ const updateBoard = (index) => {
   if(newWinner){
     confetti()
     setWinner(newWinner)
-  }else if(CheckEndGame(newBoard)){
+  }else if(checkEndGame(newBoard)){
     setWinner(false) //cheacamos si hay un empate para reinciar el juego
   }
 
@@ -77,10 +77,27 @@ return (
     <h1>3 en raya </h1>
     <button onClick={resetGame}> comenzar de nuevo </button>
     <section className="game"> 
-      
+       {board.map((_, index) => {
+        return (
+          <Square
+          key={index}
+          index={index}
+          updateBoard={updateBoard}>
+            {board[index]}
+          </Square>
+        )
+       })}
 
     </section>
+
+    <section className="turn">
+ <Square isSelected={turn === TURNS.X}> {TURNS.X}</Square>
+ <Square isSelected={turn === TURNS.O}> {TURNS.O}</Square>
+    </section>
+
+    <WinnerModal resetGame={resetGame} winner={winner}/>
   </main>
 )
 }
 
+export default App
