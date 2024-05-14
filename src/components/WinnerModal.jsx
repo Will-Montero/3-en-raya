@@ -5,6 +5,7 @@ import { Square } from "./Square";
 export function WinnerModal ({winner, resetGame}) {
     if(winner === null) return null
     return (
+        //ventana que aparece cuando se gana o hay empate 
         <section className="winner">
          <div className="text">
             <h2>
@@ -19,7 +20,7 @@ export function WinnerModal ({winner, resetGame}) {
 
             <footer>
                 <button onClick={resetGame}>
-                    empezar de nuevo 
+                    empezar de nuevo
                 </button>
             </footer>
 

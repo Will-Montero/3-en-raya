@@ -30,7 +30,7 @@ function App() {
     setTurn(TURNS.X)
     setWinner(null)
 
-    window.localStorage.removeItme('board')
+    window.localStorage.removeItem('board')
     window.localStorage.removeItem('turn')
   }
 
